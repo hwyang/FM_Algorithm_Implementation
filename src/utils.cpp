@@ -2,26 +2,26 @@
 #include"algo.h"
 using namespace std;
 
-// void random_placement(Cell *cell){
-// 	if (area_[PART_A] == area_[PART_B]){
-// 		int PART = rand() % 2;
-//     	if(PART != 0 && PART != 1){
-// 			cout << PART;
-//         	cout << "error in random placement for cell" << cell->ID << endl;
-//         	return;
-//     	}
-// 		area_[PART] += cell->size;
-//         cell->partition = PART;
-// 	}
-// 	else if (area_[PART_A] < area_[PART_B]){
-// 		area_[PART_A] += cell->size;
-//         cell->partition = PART_A;
-// 	}
-// 	else{
-// 		area_[PART_B] += cell->size;
-//         cell->partition = PART_B;
-// 	}
-// }
+void random_placement(Cell *cell){
+	if (area_[PART_A] == area_[PART_B]){
+		int PART = rand() % 2;
+    	if(PART != 0 && PART != 1){
+			cout << PART;
+        	cout << "error in random placement for cell" << cell->ID << endl;
+        	return;
+    	}
+		area_[PART] += cell->size;
+        cell->partition = PART;
+	}
+	else if (area_[PART_A] < area_[PART_B]){
+		area_[PART_A] += cell->size;
+        cell->partition = PART_A;
+	}
+	else{
+		area_[PART_B] += cell->size;
+        cell->partition = PART_B;
+	}
+}
 
 void cell_read(const char *argv){
 	ifstream file;
@@ -35,22 +35,15 @@ void cell_read(const char *argv){
 	}
 	total_area = 0;
 	while(file >> cellname >> cellsize){
-		//cout << count << ' ' << cellname << ' ' << cellsize << endl;
 		Cell *cell = new Cell(count, cellname, cellsize);
-		//random_placement(cell);
 		cell->partition = PART_B;
 		area_[PART_B] += cellsize;
 		total_area += cellsize;
 		if (cellsize > smax) smax = cellsize;
 		cell_list.push_back(cell);
 		cellID[cellname] = count;
-		//cellName[count] = cellname;
 		count++;
-		//cout << cell->partition << ' ' << cell->size << ' ' << area_a << ' ' << area_b << endl;
 	}
-	//total_cells = count;
-	//cout << total_cells << endl;
-	//cout << "total area: " << total_area << endl;
 	file.close();
 	return ;
 }
@@ -58,7 +51,6 @@ void cell_read(const char *argv){
 void net_read(const char *argv){
 	ifstream file;
 	string temp;
-	//int count = 0;
 	upper = 0.46 * total_area + smax;
     lower = 0.46 * total_area - smax;
 	file.open(argv);
@@ -72,7 +64,6 @@ void net_read(const char *argv){
 		net->netname = temp;
 		char c;
 		file >> c;
-		//int sizecount = 0;
 		while(file >> c){
 			if(c == '}') break;
 			string str;
@@ -87,17 +78,11 @@ void net_read(const char *argv){
 				}
 			}
 			net->cells_in_[connectedCell->partition]++;
-			//connectedCell->pin++;
 			connectedCell->connectedNets.push_back(net);
-			//sizecount++;
 		}
-		//net->size = sizecount;
 		net_list.push_back(net);
 		if(net->cells_in_[PART_A] * net->cells_in_[PART_B]) cut++;
-		//count++;
 	}
-	//total_nets = count;
-	//cout << total_nets << endl;
 	file.close();
 	return;
 }
@@ -120,11 +105,10 @@ void print_cell(Cell *cell){
 	for(int j = 0; j < cell->connectedNets.size(); j++){
 		cout << cell->connectedNets[j]->netname << ' ';
 	}
-	//if (cell->connectedNets.size() != cell->pin) cout << "error in cell pins\n";
 	cout << endl;
 }
 void print_net(Net *net){
-	cout << net->netname << ' ';// << net->size << ' ';
+	cout << net->netname << ' ';
 	cout << "|" << net->cells_in_[PART_A] << ' ' << net->cells_in_[PART_B] << ' ';
 	for(int j = 0; j < net->adj.size(); j++){
 		cout << net->adj[j]->cellname << ' ';
@@ -154,8 +138,6 @@ void deletion(){
 
 void output_file(const char *argv){
 	ofstream file;
-	// if(!A.empty()) cout << "A is not Empty!\n";
-    // if(!B.empty()) cout << "B is not Empty!\n";
     for(auto& cur_cell : cell_list){
         if(cur_cell->partition == PART_A){
             A.push_back(cur_cell);
@@ -180,51 +162,3 @@ void output_file(const char *argv){
 	}
 	file.close();
 }
-
-
-
-// Net* split(string str, char del){
-	
-// 	string temp = "";
-// 	int sizecount = 0;
-// 	Net* net = new Net();
-// 	for(int i = 0; i < (int)str.size(); i++){
-// 		// If cur char is not del, then append it to the cur "word", otherwise
-//         // you have completed the word, print it, and start a new word.
-//         if(str[i] != del){
-// 			temp += str[i];
-//         }
-//         else{
-// 			if(temp != "NET" && temp != "{" && temp !="}"){
-// 				if(temp[0] == 'n'){
-// 					net->netname = temp;
-// 				}
-// 				else if(temp[0] == 'c'){
-// 					net->adj.push_back(cell_list[cellID[temp]]);
-// 					//cout << area_[PART_A] << "; " << area_[PART_B] << ' ' << (double)abs((int)area_[PART_A] - (int)area_[PART_B]) << endl;
-// 					if(!check_area_constraint(true)){
-// 						if(cell_list[cellID[temp]]->partition == PART_B){
-// 							cell_list[cellID[temp]]->partition = PART_A;
-// 							area_[PART_A] += cell_list[cellID[temp]]->size;
-// 							area_[PART_B] -= cell_list[cellID[temp]]->size;
-// 						}
-// 					}
-// 					//cout << net->cells_in_[cell_list[cellID[temp]]->partition] << endl;
-// 					net->cells_in_[cell_list[cellID[temp]]->partition]++;
-// 					//cout << net->cells_in_[cell_list[cellID[temp]]->partition] << endl;
-// 					//cout << temp << ':' << cellID[temp] << endl;
-// 					//cout << cell_list[cellID[temp]].ID << endl;
-// 					cell_list[cellID[temp]]->pin++;
-// 					cell_list[cellID[temp]]->connectedNets.push_back(net);
-// 					sizecount++;
-// 				}
-// 			}
-        	
-//             temp = "";
-//         }
-//     }
-// 	net->size = sizecount;
-// 	if(net->cells_in_[PART_A] * net->cells_in_[PART_B]) cut++; //if net's cells in both PART_A and PART_B
-// 	//cout << net->cells_in_[PART_A] << ' ' <<  net->cells_in_[PART_B] << ' ' << cut << endl;
-// 	return net;
-// }

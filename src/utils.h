@@ -6,7 +6,6 @@ using namespace std;
 #define UTILS_H
 extern vector<Cell *> cell_list;
 extern vector<Net *> net_list;
-//extern unsigned int total_cells
 extern unsigned int total_nets;
 extern unsigned int total_area, area_[2];
 extern unsigned int smax;
@@ -17,7 +16,6 @@ extern vector<int> move_sequence;
 extern vector<Cell *> A;
 extern vector<Cell *> B;
 extern map<string, int> cellID;
-// extern map<int, string> cellName;
 extern map<int, vector<Cell *> > Bucket_List;
 extern clock_t start;
 

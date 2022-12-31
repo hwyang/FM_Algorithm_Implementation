@@ -23,12 +23,10 @@ class Net{
 	public:
 		Net(){
 			netname = 'x';
-			//int size = 0;
 			this->cells_in_[PART_A] = 0;
 			this->cells_in_[PART_B] = 0;
 		}
 		string netname;
-		//int size;
 		int cells_in_[2];
 		vector<Cell *> adj;
 };
@@ -37,7 +35,6 @@ class Cell{
 	public:
 		Cell(int ID, string cellname, int size):ID(ID), cellname(cellname), size(size){
 			this->gain = 0;
-			//this->pin = 0;
 			this->locked = false;
 			this->partition = NO_PART;
 		}
@@ -46,7 +43,6 @@ class Cell{
 		bool locked;
 		int gain;
 		int size;
-		//int pin;
 		int partition;
 		vector<Net *> connectedNets;
 };
