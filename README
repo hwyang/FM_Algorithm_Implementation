@@ -1,18 +1,18 @@
 --How to Compile
-  In ~/HW2/src directory, enter the following command:
+  In /src directory, enter the following command:
   $ make
-  It will generate the executable file "hw2" in "~/HW2/bin/"
+  It will generate the executable file "hw2" in "/bin"
 
   $ make clean
   It will remove the executable file
 
 --How to Run
-  In ~/HW2/src directory, enter the following command:
+  In /src directory, enter the following command:
   $ ../bin/<exe> <net file> <cell file> <output file>
   e.g.:
   $ ../bin/hw2 ../testcases/p2-1.nets ../testcases/p2-1.cells ../output/p2-1.output
 
-  In ~/HW2/bin directory, enter the following command:
+  In /bin directory, enter the following command:
   $ ./<exe> <net file> <cell file> <output file>
   e.g.:
   $ ./hw2 ../testcases/p2-1.nets ../testcases/p2-1.cells ../output/p2-1.output
